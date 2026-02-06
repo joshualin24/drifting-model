@@ -1,6 +1,8 @@
 # Drifting Models
 
-Unofficial PyTorch implementation of ["Generative Modeling via Drifting"](https://arxiv.org/abs/2602.04770) 
+Unofficial PyTorch implementation of ["Generative Modeling via Drifting"](https://arxiv.org/abs/2602.04770).
+
+Just for fun and learning. Feel free to test and pull request~
 
 **One-step generation** - no iterative sampling required (1-NFE).
 
