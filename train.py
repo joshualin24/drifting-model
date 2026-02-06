@@ -164,8 +164,10 @@ def compute_drifting_loss(
         feat_gen = x_gen.flatten(start_dim=1)
         feat_pos = x_pos.flatten(start_dim=1)
     else:
+        # feat_gen needs gradient for backprop through the generator
+        feat_gen = feature_encoder(x_gen)
+        # feat_pos doesn't need gradient (real samples)
         with torch.no_grad():
-            feat_gen = feature_encoder(x_gen)
             feat_pos = feature_encoder(x_pos)
 
     total_loss = torch.tensor(0.0, device=device)
