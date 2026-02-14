@@ -80,7 +80,23 @@ CIFAR10_CONFIG = {
 }
 
 
-def get_dataset(name: str, root: str = "/home/qingtianzhu.ty/drifting/data") -> tuple:
+
+# Add these below MNIST_CONFIG
+
+FASHION_MNIST_CONFIG = MNIST_CONFIG.copy()
+FASHION_MNIST_CONFIG.update({
+    "dataset": "fashion-mnist",
+    # Fashion-MNIST is slightly harder, so we might want more epochs, 
+    # but starting with MNIST settings is safe.
+})
+
+KMNIST_CONFIG = MNIST_CONFIG.copy()
+KMNIST_CONFIG.update({
+    "dataset": "kmnist",
+})
+
+
+def get_dataset(name: str, root: str = "/home/user/data/data/drifting/data") -> tuple:
     """Get dataset and transforms."""
     if name.lower() == "mnist":
         # MNIST data is at {root}/mnist/MNIST/raw/
@@ -90,8 +106,8 @@ def get_dataset(name: str, root: str = "/home/qingtianzhu.ty/drifting/data") -> 
             transforms.ToTensor(),
             transforms.Normalize([0.5], [0.5]),  # [-1, 1]
         ])
-        train_dataset = datasets.MNIST(mnist_root, train=True, download=False, transform=transform)
-        test_dataset = datasets.MNIST(mnist_root, train=False, download=False, transform=transform)
+        train_dataset = datasets.MNIST(mnist_root, train=True, download=True, transform=transform)
+        test_dataset = datasets.MNIST(mnist_root, train=False, download=True, transform=transform)
     elif name.lower() in ["cifar10", "cifar"]:
         transform = transforms.Compose([
             transforms.RandomHorizontalFlip(),
@@ -104,6 +120,27 @@ def get_dataset(name: str, root: str = "/home/qingtianzhu.ty/drifting/data") -> 
         ])
         train_dataset = datasets.CIFAR10(root, train=True, download=True, transform=transform)
         test_dataset = datasets.CIFAR10(root, train=False, download=True, transform=test_transform)
+    elif name == "fashion-mnist":
+        # FashionMNIST
+        root_dir = os.path.join(root, "fashion-mnist")
+        transform = transforms.Compose([
+            transforms.Resize(32),
+            transforms.ToTensor(),
+            transforms.Normalize([0.5], [0.5]),  # [-1, 1]
+        ])
+        train_dataset = datasets.FashionMNIST(root_dir, train=True, download=True, transform=transform)
+        test_dataset = datasets.FashionMNIST(root_dir, train=False, download=True, transform=transform)
+
+    elif name == "kmnist":
+        # Kuzushiji-MNIST
+        root_dir = os.path.join(root, "kmnist")
+        transform = transforms.Compose([
+            transforms.Resize(32),
+            transforms.ToTensor(),
+            transforms.Normalize([0.5], [0.5]),  # [-1, 1]
+        ])
+        train_dataset = datasets.KMNIST(root_dir, train=True, download=True, transform=transform)
+        test_dataset = datasets.KMNIST(root_dir, train=False, download=True, transform=transform)
     else:
         raise ValueError(f"Unknown dataset: {name}")
 

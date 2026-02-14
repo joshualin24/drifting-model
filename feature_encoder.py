@@ -351,7 +351,7 @@ def create_feature_encoder(
     Returns:
         Feature encoder
     """
-    if dataset.lower() == "mnist":
+    if dataset.lower() in ["mnist"]:
         return MultiScaleFeatureEncoder(
             in_channels=1,
             base_width=64,
@@ -359,7 +359,7 @@ def create_feature_encoder(
             feature_dim=feature_dim,
             multi_scale=multi_scale,
         )
-    elif dataset.lower() in ["cifar10", "cifar"]:
+    elif dataset.lower() in ["cifar10", "cifar", "fashion-mnist"]:
         if use_pretrained:
             # Use ImageNet-pretrained ResNet - returns multi-scale feature maps
             return PretrainedResNetEncoder(pretrained=True)
